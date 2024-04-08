@@ -1,0 +1,9 @@
+build:
+  docker:
+    database: ./server/db/build/Dockerfile
+    authservice: ./server/authservice/build/Dockerfile
+    customerservice: ./server/customerservice/build/Dockerfile
+    tasksservice: ./server/taskservice/build/Dockerfile
+
+processes:
+  server: docker compose up -d

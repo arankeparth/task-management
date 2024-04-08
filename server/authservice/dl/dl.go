@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/jmoiron/sqlx"
+	"golang.org/x/crypto/bcrypt"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -30,10 +31,10 @@ const (
 	customerIdColumnName = "customerid"
 )
 
-func (dl *AuthDl) GetInfo(username string) (string, int64) {
+func (dl *AuthDl) GetInfo(username string) (string, string) {
 	query := fmt.Sprintf("SELECT customerid,  password from %s WHERE username='%s';", credsTable, username)
 	var password string
-	var customerId int64
+	var customerId string
 	dl.DB.QueryRow(query).Scan(&customerId, &password)
 	return password, customerId
 }
@@ -81,9 +82,13 @@ func (dl *AuthDl) GetPubKey(customerid int64) string {
 	return pubKey
 }
 
-func (dl *AuthDl) CreateUser(username string, password string, customerid int64) error {
-	query := fmt.Sprintf("INSERT into %s values(%d, '%s', '%s');", credsTable, customerid, username, password)
-	_, err := dl.DB.Exec(query)
+func (dl *AuthDl) CreateUser(username string, password string, customerid string) error {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
+	query := fmt.Sprintf("INSERT into %s values('%s', '%s', '%s');", credsTable, customerid, username, hashedPassword)
+	_, err = dl.DB.Exec(query)
 	if err != nil {
 		print(err.Error())
 		return err

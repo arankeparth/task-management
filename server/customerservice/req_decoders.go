@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"plantrip-backend/server/spec/customerspec"
+	"task-management/server/spec/customerspec"
 )
 
 func decodeCreateCustomerRequest(_ context.Context, r *http.Request) (interface{}, error) {
@@ -21,11 +21,7 @@ func decodeGetCustomerRequest(ctx context.Context, r *http.Request) (interface{}
 	if err != nil {
 		return nil, err
 	}
-	TokenString := r.Header.Get("Authorization")
-	PublicKey := r.Header.Get("public_key")
-	ctx = context.WithValue(ctx, "token_string", TokenString)
-	ctx = context.WithValue(ctx, "public_key", PublicKey)
-	return &customerspec.GetCustomerRequest{
+	return customerspec.GetCustomerRequest{
 		CustomerId: customerId,
 	}, nil
 }

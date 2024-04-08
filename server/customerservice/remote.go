@@ -2,8 +2,8 @@ package customerApi
 
 import (
 	"errors"
-	"plantrip-backend/server/spec/authspec"
-	"plantrip-backend/server/spec/customerspec"
+	"task-management/server/spec/authspec"
+	"task-management/server/spec/customerspec"
 )
 
 func (h *CustomerHandler) CreateUserCreds(req *customerspec.CreateCustomerRequest) error {

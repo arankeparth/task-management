@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
-	"plantrip-backend/server/spec/authspec"
+	"task-management/server/spec/authspec"
 
 	"github.com/go-kit/kit/endpoint"
 )
@@ -78,7 +78,7 @@ func makeVerifyJwtEP(h *AuthHandler) endpoint.Endpoint {
 		if !ok {
 			return nil, errors.New("error while converting types")
 		}
-		parsedToken, err := h.VerifyJwt(req.TokenString, req.PublicKeyString)
+		parsedToken, err := h.VerifyJwt(req.TokenString)
 		if err != nil {
 			errMsg := fmt.Sprintf("invalid jwt token: %s", err.Error())
 			return nil, errors.New(errMsg)

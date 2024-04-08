@@ -2,7 +2,7 @@ package customerdl
 
 import (
 	"fmt"
-	"plantrip-backend/server/spec/customerspec"
+	"task-management/server/spec/customerspec"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
@@ -19,13 +19,13 @@ func NewCustomerDL(db *sqlx.DB) *CustomerDL {
 }
 
 const (
-	CustomerInfoTable  = "customer_info"
+	CustomerInfoTable  = "customers"
 	CustomerCredsTable = "customer_creds"
 	OffersTable        = "offers"
 )
 
 func (DL *CustomerDL) CreateCustomer(req *customerspec.CreateCustomerRequest) error {
-	query := fmt.Sprintf("INSERT into %s values(%d, '%s', '%s', '%s', '%d', '%s')", CustomerInfoTable,
+	query := fmt.Sprintf("INSERT into %s values('%s', '%s', '%s', '%s', '%d', '%s')", CustomerInfoTable,
 		req.CustomerId,
 		req.FirstName,
 		req.LastName,
@@ -67,9 +67,20 @@ func (DL *CustomerDL) UpdateCustomer(req *customerspec.UpdateCustomerRequest) er
 }
 
 func (DL *CustomerDL) GetCustomer(req *customerspec.GetCustomerRequest) *customerspec.GetCustomerResponse {
-	query := fmt.Sprintf("SELECT * from %s  WHERE customerid=%d", CustomerInfoTable, req.CustomerId)
+	query := fmt.Sprintf("SELECT * from %s  WHERE CustomerId=%s;", CustomerInfoTable, fmt.Sprintf("'%s'", req.CustomerId))
 	resp := &customerspec.GetCustomerResponse{}
-	DL.DB.QueryRow(query).Scan(resp)
+	rows, err := DL.DB.Query(query)
+	if err != nil {
+		fmt.Println(err.Error())
+		return nil
+	}
+	for rows.Next() {
+		err := rows.Scan(&resp.CustomerId, &resp.FirstName, &resp.LastName, &resp.Email, &resp.Age, &resp.Gender)
+		if err != nil {
+			fmt.Println(err.Error())
+			return nil
+		}
+	}
 	return resp
 }
 

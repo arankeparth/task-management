@@ -16,12 +16,11 @@ type GenericRequestWithToken struct {
 }
 
 type VerifyJwtReq struct {
-	TokenString     string `json:"token_string"`
-	PublicKeyString string `json:"pub_key_string"`
+	TokenString string `json:"token_string"`
 }
 
 type CreateUserRequest struct {
-	CustomerId int64  `json:"customerid"`
+	CustomerId string `json:"customerid"`
 	Username   string `json:"username"`
 	Password   string `json:"password"`
 }

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
-	customerApi "plantrip-backend/server/customerservice"
-	"plantrip-backend/server/spec/customerspec"
+	customerApi "task-management/server/customerservice"
+	"task-management/server/spec/customerspec"
 
 	"github.com/gorilla/mux"
 )

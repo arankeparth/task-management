@@ -3,8 +3,8 @@ package customerApi
 import (
 	"log"
 	"net/http"
-	dl "plantrip-backend/server/customerservice/dl"
-	dbconn "plantrip-backend/server/db"
+	dl "task-management/server/customerservice/dl"
+	dbconn "task-management/server/db"
 
 	"github.com/go-resty/resty/v2"
 )

@@ -3,8 +3,8 @@ package authservice
 import (
 	"log"
 	"net/http"
-	authdl "plantrip-backend/server/authservice/dl"
-	dbconn "plantrip-backend/server/db"
+	authdl "task-management/server/authservice/dl"
+	dbconn "task-management/server/db"
 )
 
 type AuthService struct {
@@ -15,7 +15,7 @@ func NewAuthService() *AuthService {
 }
 
 func (as *AuthService) InitAuthServiceHandler() http.Handler {
-	AuthDB := "authorization"
+	AuthDB := "authorisation"
 	Db, err := dbconn.NewDB(AuthDB)
 	if err != nil {
 		print(err.Error())

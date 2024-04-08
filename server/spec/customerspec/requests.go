@@ -1,7 +1,7 @@
 package customerspec
 
 type CreateCustomerRequest struct {
-	CustomerId int64  `json:"customerid"`
+	CustomerId string `json:"customerid"`
 	FirstName  string `json:"firstname"`
 	LastName   string `json:"lastname"`
 	Email      string `json:"email"`
@@ -11,13 +11,11 @@ type CreateCustomerRequest struct {
 }
 
 type DeleteCustomerRequest struct {
-	// PATH
-	CustomerId int64 `json:"customerid"`
+	CustomerId string `json:"customerid"`
 }
 
 type GetCustomerRequest struct {
-	// PATH
-	CustomerId int64 `json:"customerid"`
+	CustomerId string `json:"customerid"`
 }
 
 type UpdateCustomerRequest struct {
@@ -34,5 +32,5 @@ type UpdateCustomerRequest struct {
 type GetOffersRequest struct {
 	TokenString string `json:"auth_token"`
 	PublicKey   string `json:"pub_key"`
-	CustomerId  int64  `json:"customerid"`
+	CustomerId  string `json:"customerid"`
 }

@@ -2,9 +2,12 @@ package authservice
 
 import (
 	"context"
-	authdl "plantrip-backend/server/authservice/dl"
-	"plantrip-backend/server/spec/authspec"
+	"os"
+	authdl "task-management/server/authservice/dl"
+	"task-management/server/spec/authspec"
+	"time"
 
+	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -19,27 +22,34 @@ func NewAuthHandler(authDl *authdl.AuthDl) *AuthHandler {
 	return authHandler
 }
 
+type Claims struct {
+	Username string `json:"username"`
+	jwt.StandardClaims
+}
+
 func (h *AuthHandler) Login(ctx context.Context, username string, password string) (*authspec.LoginResponse, error) {
-	encryptedPass, customerId := h.AuthDl.GetInfo(username)
+	encryptedPass, userID := h.AuthDl.GetInfo(username)
 	isLoginSuccessful := bcrypt.CompareHashAndPassword([]byte(encryptedPass), []byte(password)) == nil
 	if isLoginSuccessful {
-		privateKeyString, publicKey, err := h.CreatePrivatePublicKeyPair(ctx, customerId)
-		if err != nil {
-			return &authspec.LoginResponse{}, err
+		expirationTime := time.Now().Add(time.Hour * 1)
+
+		claims := &Claims{
+			Username: username,
+			StandardClaims: jwt.StandardClaims{
+				ExpiresAt: expirationTime.Unix(),
+			},
 		}
 
-		tokenString, err := getJwtToken(privateKeyString, customerId)
+		token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+		tokenString, err := token.SignedString([]byte(os.Getenv("JWT_KEY")))
 		if err != nil {
-			return &authspec.LoginResponse{
-				IsLoggedIn:   false,
-				ErrorMessage: err.Error(),
-			}, err
+			return nil, err
 		}
+
 		return &authspec.LoginResponse{
 			IsLoggedIn: true,
-			PublicKey:  publicKey,
 			AuthToken:  tokenString,
-			CustomerId: customerId,
+			CustomerId: userID,
 		}, nil
 	}
 	return &authspec.LoginResponse{
@@ -48,7 +58,7 @@ func (h *AuthHandler) Login(ctx context.Context, username string, password strin
 	}, nil
 }
 
-func (h *AuthHandler) CreateUser(ctx context.Context, username string, password string, customerid int64) error {
+func (h *AuthHandler) CreateUser(ctx context.Context, username string, password string, customerid string) error {
 	err := h.AuthDl.CreateUser(username, password, customerid)
 	if err != nil {
 		return err

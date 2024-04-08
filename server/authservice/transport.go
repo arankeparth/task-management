@@ -2,7 +2,7 @@ package authservice
 
 import (
 	"net/http"
-	"plantrip-backend/server/spec/authspec"
+	"task-management/server/spec/authspec"
 
 	kithttp "github.com/go-kit/kit/transport/http"
 	"github.com/gorilla/mux"
@@ -13,7 +13,7 @@ func MakeHandler(eps *AuthEps, jwtHandler *AuthHandler) http.Handler {
 	loginHandler := kithttp.NewServer(
 		eps.LoginEP,
 		decodeLoginRequest,
-		encodeResponse,
+		createSessionCookie,
 	)
 
 	createUserHandler := kithttp.NewServer(

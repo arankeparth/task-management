@@ -3,7 +3,8 @@ package customerApi
 import (
 	"net/http"
 
-	"plantrip-backend/server/spec/customerspec"
+	"task-management/server/middleware"
+	"task-management/server/spec/customerspec"
 
 	kithttp "github.com/go-kit/kit/transport/http"
 	"github.com/gorilla/mux"
@@ -11,6 +12,7 @@ import (
 
 func MakeHandler(eps *CustomerEps) http.Handler {
 	opts := []kithttp.ServerOption{}
+	JWTMiddleware := middleware.JWTMiddleware
 	createCustomerHandler := kithttp.NewServer(
 		eps.CreateCustomerEP,
 		decodeCreateCustomerRequest,
@@ -38,9 +40,9 @@ func MakeHandler(eps *CustomerEps) http.Handler {
 
 	r := mux.NewRouter()
 	r.Handle(customerspec.CreateCustomerPath, createCustomerHandler).Methods("POST")
-	r.Handle(customerspec.GetCustomerPath, getCustomerHandler).Methods("GET")
-	r.Handle(customerspec.DeleteCustomerPath, deleteCustomerHandler).Methods("DELETE")
-	r.Handle(customerspec.GetOffersPath, getOffersHadler).Methods("GET")
+	r.Handle(customerspec.GetCustomerPath, JWTMiddleware(getCustomerHandler)).Methods("GET")
+	r.Handle(customerspec.DeleteCustomerPath, JWTMiddleware(deleteCustomerHandler)).Methods("DELETE")
+	r.Handle(customerspec.GetOffersPath, JWTMiddleware(getOffersHadler)).Methods("GET")
 
 	return r
 }

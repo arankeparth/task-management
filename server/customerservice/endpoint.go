@@ -3,7 +3,7 @@ package customerApi
 import (
 	"context"
 	"errors"
-	"plantrip-backend/server/spec/customerspec"
+	"task-management/server/spec/customerspec"
 
 	"github.com/go-kit/kit/endpoint"
 )
@@ -18,7 +18,6 @@ type CustomerEps struct {
 
 func NewCustomerEndpoints(ch *CustomerHandler) (*CustomerEps, error) {
 	var err error
-	jwtMiddleWare := ch.JWTMiddleware()
 	createCustomerEP := makeCreateCustomerEP(ch)
 	if createCustomerEP == nil {
 		err = errors.New("failed to create createCustomerEP")
@@ -47,10 +46,10 @@ func NewCustomerEndpoints(ch *CustomerHandler) (*CustomerEps, error) {
 
 	return &CustomerEps{
 		CreateCustomerEP: createCustomerEP,
-		DeleteCustomerEP: jwtMiddleWare(deleteCustomerEP),
-		GetCustomerEP:    jwtMiddleWare(getCustomerEP),
-		UpdateCustomerEP: jwtMiddleWare(updateCustomerEP),
-		GetOffersEP:      jwtMiddleWare(getOffersEP),
+		DeleteCustomerEP: deleteCustomerEP,
+		GetCustomerEP:    getCustomerEP,
+		UpdateCustomerEP: updateCustomerEP,
+		GetOffersEP:      getOffersEP,
 	}, nil
 }
 
@@ -112,11 +111,6 @@ func makeDeleteCustomerEP(ch *CustomerHandler) endpoint.Endpoint {
 
 func makeGetOffersEP(ch *CustomerHandler) endpoint.Endpoint {
 	return func(ctx context.Context, request interface{}) (response interface{}, err error) {
-		req := request.(customerspec.GetOffersRequest)
-		resp, err := ch.GetOffers(req.CustomerId)
-		if err != nil {
-			return nil, err
-		}
-		return resp, nil
+		return nil, nil
 	}
 }

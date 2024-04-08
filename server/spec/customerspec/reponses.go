@@ -1,12 +1,12 @@
 package customerspec
 
 type GetCustomerResponse struct {
-	CustomerId int64  `json:"customerid"`
-	FirstName  string `json:"fisrtname"`
-	LastName   string `json:"lastname"`
-	Email      string `json:"email"`
-	Age        string `json:"age"`
-	Gender     string `json:"gender"`
+	CustomerId string `json:"customerid" db:"CustomerId"`
+	FirstName  string `json:"fisrtname" db:"FirstName"`
+	LastName   string `json:"lastname" db:"LastName"`
+	Email      string `json:"email" db:"Email"`
+	Age        string `json:"age" db:"Age"`
+	Gender     string `json:"gender" db:"Gender"`
 }
 
 type CreateCustomerRsponse struct {

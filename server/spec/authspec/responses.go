@@ -7,7 +7,8 @@ type LoginResponse struct {
 	ErrorMessage string `json:"error_message"`
 	AuthToken    string `json:"auth_token"`
 	PublicKey    string `json:"public_key"`
-	CustomerId   int64  `json:"customerid"`
+	CustomerId   string `json:"customerid"`
+	CustomerName string `json:"customername"`
 }
 
 type SetPubKeyResponse struct {

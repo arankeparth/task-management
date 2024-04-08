@@ -2,8 +2,8 @@ package customerApi
 
 import (
 	"errors"
-	customerdl "plantrip-backend/server/customerservice/dl"
-	"plantrip-backend/server/spec/customerspec"
+	customerdl "task-management/server/customerservice/dl"
+	"task-management/server/spec/customerspec"
 
 	"github.com/go-resty/resty/v2"
 )

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"plantrip-backend/server/authservice"
-	"plantrip-backend/server/spec/authspec"
+	"task-management/server/authservice"
+	"task-management/server/spec/authspec"
 
 	"github.com/gorilla/mux"
 )
@@ -16,6 +16,7 @@ func main() {
 	Mux := mux.NewRouter()
 	Mux.Handle(authspec.BasePath, AuthHandler)
 	errs := make(chan error, 100)
+
 	go func() {
 		errs <- http.ListenAndServe(authspec.Host, accessControl(AuthHandler))
 	}()
@@ -27,7 +28,8 @@ func accessControl(h http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-		w.Header().Set("Access-Control-Allow-Headers", "Origin, Content-Type, Authorization, public_key")
+		w.Header().Set("Access-Control-Allow-Headers", "Origin, Content-Type, Authorization, public_key, Access-Control-Allow-Origin")
+		w.Header().Set("Referrer-Policy", "same-origin")
 
 		if r.Method == "OPTIONS" {
 			return
