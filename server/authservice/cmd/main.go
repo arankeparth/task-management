@@ -1,8 +1,9 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net/http"
+	"os"
 
 	"task-management/server/authservice"
 	"task-management/server/spec/authspec"
@@ -11,7 +12,11 @@ import (
 )
 
 func main() {
+	logger := log.New(os.Stdout, "[AuthService Main] ", log.LstdFlags)
+	logger.Printf("Starting auth service")
+	logger.Printf("Initializing auth service")
 	As := authservice.NewAuthService()
+	logger.Printf("Initializing auth service handler")
 	AuthHandler := As.InitAuthServiceHandler()
 	Mux := mux.NewRouter()
 	Mux.Handle(authspec.BasePath, AuthHandler)
@@ -21,7 +26,7 @@ func main() {
 		errs <- http.ListenAndServe(authspec.Host, accessControl(AuthHandler))
 	}()
 	err := <-errs
-	fmt.Println(err.Error())
+	logger.Printf("Error in auth service: %s", err.Error())
 }
 
 func accessControl(h http.Handler) http.Handler {

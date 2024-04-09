@@ -10,15 +10,16 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+const (
+	taskManagementContainer = "task-management-database-1"
+)
+
 func NewDB(dbName string) (*sqlx.DB, error) {
-	fmt.Println("DB_USER", os.Getenv("DB_USER"))
-	fmt.Println("DB_PASS", os.Getenv("DB_PASS"))
-	fmt.Println("DB_HOST", os.Getenv("DB_HOST"))
 	cfg := mysql.Config{
 		User:                 os.Getenv("DB_USER"),
-		Passwd:               "parth123",
+		Passwd:               os.Getenv("DB_PASS"),
 		Net:                  "tcp",
-		Addr:                 "task-management-database-1",
+		Addr:                 taskManagementContainer,
 		DBName:               dbName,
 		AllowNativePasswords: true,
 	}
@@ -38,6 +39,5 @@ func NewDB(dbName string) (*sqlx.DB, error) {
 		return nil, err
 	}
 	db.SetMaxIdleConns(0)
-	fmt.Println("hiii")
 	return db, nil
 }

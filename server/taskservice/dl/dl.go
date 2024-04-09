@@ -51,7 +51,7 @@ func (t *TaskDL) CreateTask(task *taskspec.CreateTaskRequest) error {
 	task.DateCreated = time.Now().Format("2006-01-02 15:04:05")
 	query := `INSERT INTO tasks (summary, description, dueDate, priority, status, assignee, dateCreated, reporter) 
 			  VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
-	fmt.Println(query)
+
 	_, err := t.db.Exec(query, task.Summary, task.Description, task.DueDate, task.Priority, task.Status, task.Assignee, task.DateCreated, task.Reporter)
 	if err != nil {
 		return err
@@ -61,7 +61,7 @@ func (t *TaskDL) CreateTask(task *taskspec.CreateTaskRequest) error {
 
 // GetTasks retrieves tasks from the database
 func (t *TaskDL) GetTasks(req *taskspec.GetTasksRequest) (taskspec.GetTaskResponse, error) {
-	fmt.Println(req)
+
 	dueDateCondition := parseCondition(req.DueDateComparison, "dueDate", req.DueDate)
 	priorityCondition := parseCondition(req.PriorityComparison, "priority", req.Priority)
 	dateCreatedCondition := parseCondition(req.DateCreatedComparison, "dateCreated", req.DateCreated)
@@ -93,7 +93,6 @@ func (t *TaskDL) GetTasks(req *taskspec.GetTasksRequest) (taskspec.GetTaskRespon
 
 	query += " ORDER BY dateCreated DESC"
 
-	fmt.Println(query)
 	rows, err := t.db.Queryx(query)
 	if err != nil {
 		return nil, err
@@ -150,7 +149,7 @@ func (t *TaskDL) DeleteTask(id int) error {
 }
 
 func (t *TaskDL) GetComments(taskID int) ([]taskspec.Comment, error) {
-	fmt.Println(taskID)
+
 	query := `SELECT * FROM comments WHERE ticketid = ? order by date_created desc`
 	rows, err := t.db.Queryx(query, taskID)
 	if err != nil {
@@ -168,13 +167,13 @@ func (t *TaskDL) GetComments(taskID int) ([]taskspec.Comment, error) {
 		}
 		comments = append(comments, comment)
 	}
-	fmt.Println(comments)
+
 	return comments, nil
 }
 
 // CreateComment creates a new comment for a task in the database
 func (t *TaskDL) CreateComment(comment *taskspec.Comment) error {
-	fmt.Println(time.Now().Format("2006-01-02 15:04:05"))
+
 	query := `INSERT INTO comments (ticketid, author_name, content, date_created) 
 			  VALUES (?, ?, ?, ?)`
 	_, err := t.db.Exec(query, comment.TicketID, comment.AuthorName, comment.Content, time.Now().Format("2006-01-02 15:04:05"))

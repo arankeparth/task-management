@@ -1,7 +1,7 @@
 package customerspec
 
 const (
-	Host               = ":5000"
+	Port               = ":5000"
 	BasePath           = "/customerApi/v1/"
 	CreateCustomerPath = "/customerApi/v1/create"
 	UpdateCustomerPath = "/customerApi/v1/update"

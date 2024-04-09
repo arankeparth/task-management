@@ -1,7 +1,7 @@
 package authspec
 
 const (
-	Host           = ":8080"
+	Port           = ":8080"
 	BasePath       = "/authapi/v1/"
 	LoginPath      = "/authapi/v1/login"
 	SetPubKeyPath  = "/authapi/v1/setpubkey"

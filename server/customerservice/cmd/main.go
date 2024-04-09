@@ -1,8 +1,9 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net/http"
+	"os"
 
 	customerApi "task-management/server/customerservice"
 	"task-management/server/spec/customerspec"
@@ -11,16 +12,21 @@ import (
 )
 
 func main() {
+	logger := log.New(os.Stdout, "[CustomerService Main] ", log.LstdFlags)
+	logger.Printf("Starting customer service")
+	logger.Printf("Initializing customer service")
 	cs := customerApi.NewCustomerService()
+	logger.Printf("Initializing customer service handler")
 	Handler := cs.InitCustomerServiceHandler()
 	Mux := mux.NewRouter()
 	Mux.Handle(customerspec.BasePath, Handler)
 	errs := make(chan error, 100)
+	logger.Printf("Listening on %s", customerspec.Host)
 	go func() {
 		errs <- http.ListenAndServe(customerspec.Host, accessControl(Handler))
 	}()
 	err := <-errs
-	fmt.Println(err.Error())
+	logger.Printf("Error in customer service: %s", err.Error())
 }
 
 func accessControl(h http.Handler) http.Handler {

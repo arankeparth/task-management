@@ -7,5 +7,5 @@ const (
 // HTTP constants
 const (
 	BasePath = "/task/"
-	Host     = ":5050"
+	Port     = ":5050"
 )

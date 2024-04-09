@@ -1,8 +1,9 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"net/http"
+	"os"
 
 	"task-management/server/spec/taskspec"
 	"task-management/server/taskservice"
@@ -11,16 +12,21 @@ import (
 )
 
 func main() {
+	logger := log.New(os.Stdout, "[TaskService Main] ", log.LstdFlags)
+	logger.Printf("Starting task service")
+	logger.Printf("Initializing task service")
 	taskservice := taskservice.NewTaskService()
+	logger.Printf("Initializing task service handler")
 	Handler := taskservice.InitTaskServiceHandler()
 	Mux := mux.NewRouter()
 	Mux.Handle(taskspec.BasePath, Handler)
 	errs := make(chan error, 100)
+	logger.Printf("Listening on %s", taskspec.Port)
 	go func() {
-		errs <- http.ListenAndServe(taskspec.Host, accessControl(Handler))
+		errs <- http.ListenAndServe(taskspec.Port, accessControl(Handler))
 	}()
 	err := <-errs
-	fmt.Println(err.Error())
+	logger.Printf("Error in task service: %s", err.Error())
 }
 
 func accessControl(h http.Handler) http.Handler {

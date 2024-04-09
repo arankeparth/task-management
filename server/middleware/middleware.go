@@ -2,9 +2,9 @@ package middleware
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"os"
+	"task-management/server/spec/authspec"
 
 	"github.com/dgrijalva/jwt-go"
 )
@@ -16,13 +16,11 @@ type Claims struct {
 
 func JWTMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("JWT Middleware")
 		token := r.Header.Get("Authorization")
 		if token == "" {
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
 			return
 		}
-		fmt.Println("Token: ", token)
 		_, err := VerifyJwt(token)
 
 		if err != nil {
@@ -38,8 +36,7 @@ func VerifyJwt(tokenStr string) (jwt.MapClaims, error) {
 	claims := &Claims{}
 	tkn, err := jwt.ParseWithClaims(tokenStr, claims,
 		func(t *jwt.Token) (interface{}, error) {
-			// TODO: Get the key from the environment
-			return []byte(os.Getenv("JWT_KEY")), nil
+			return []byte(os.Getenv(authspec.JwtKeyKey)), nil
 		})
 
 	if err != nil {

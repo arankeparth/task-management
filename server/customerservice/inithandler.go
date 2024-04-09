@@ -22,7 +22,7 @@ func (cs *CustomerService) InitCustomerServiceHandler() http.Handler {
 	client.BaseURL = "http://task-management-authservice-1:8080"
 	Db, err := dbconn.NewDB(CustomerDB)
 	if err != nil {
-		log.Print(err.Error())
+		log.Println(err.Error())
 		return nil
 	}
 

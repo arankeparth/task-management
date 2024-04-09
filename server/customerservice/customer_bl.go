@@ -2,6 +2,7 @@ package customerApi
 
 import (
 	"errors"
+	"log"
 	customerdl "task-management/server/customerservice/dl"
 	"task-management/server/spec/customerspec"
 
@@ -11,24 +12,30 @@ import (
 type CustomerHandler struct {
 	Dl     *customerdl.CustomerDL
 	Client *resty.Client
+	logger *log.Logger
 }
 
 func NewCustomerHandler(dl *customerdl.CustomerDL, client *resty.Client) *CustomerHandler {
+	logger := log.New(log.Writer(), "[Customerservice] ", log.LstdFlags)
 	return &CustomerHandler{
 		Dl:     dl,
 		Client: client,
+		logger: logger,
 	}
 }
 
 func (h *CustomerHandler) Create(req *customerspec.CreateCustomerRequest) error {
 	err := h.Dl.CreateCustomer(req)
 	if err != nil {
+		h.logger.Printf("Error creating customer: %s", err.Error())
 		return err
 	}
 	err = h.CreateUserCreds(req)
 	if err != nil {
+		h.logger.Printf("Error creating user creds: %s", err.Error())
 		return err
 	}
+	h.logger.Printf("Customer created successfully for %s", req.Email)
 	return nil
 }
 

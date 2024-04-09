@@ -22,16 +22,9 @@ func MakeHandler(eps *AuthEps, jwtHandler *AuthHandler) http.Handler {
 		encodeResponse,
 	)
 
-	verifyJwtHandler := kithttp.NewServer(
-		eps.VerifyJwtEP,
-		decodeValidateJwtRequest,
-		encodeResponse,
-	)
-
 	r := mux.NewRouter()
 	r.Handle(authspec.LoginPath, loginHandler).Methods("POST")
 	r.Handle(authspec.CreateUserPath, createUserHandler).Methods("POST")
-	r.Handle(authspec.VerifyJwtPath, verifyJwtHandler).Methods("POST")
 
 	return r
 }

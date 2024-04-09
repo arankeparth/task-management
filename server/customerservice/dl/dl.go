@@ -71,13 +71,11 @@ func (DL *CustomerDL) GetCustomer(req *customerspec.GetCustomerRequest) *custome
 	resp := &customerspec.GetCustomerResponse{}
 	rows, err := DL.DB.Query(query)
 	if err != nil {
-		fmt.Println(err.Error())
 		return nil
 	}
 	for rows.Next() {
 		err := rows.Scan(&resp.CustomerId, &resp.FirstName, &resp.LastName, &resp.Email, &resp.Age, &resp.Gender)
 		if err != nil {
-			fmt.Println(err.Error())
 			return nil
 		}
 	}
@@ -88,7 +86,6 @@ func (DL *CustomerDL) GetOffers(customerId int64) ([]customerspec.GetOffersRespo
 	query := fmt.Sprintf("SELECT * from %s where customerid=%d", OffersTable, customerId)
 	rows, err := DL.DB.Query(query)
 	if err != nil {
-		fmt.Println("error")
 		return nil, err
 	}
 	resp := []customerspec.GetOffersResponse{}
