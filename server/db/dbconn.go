@@ -18,7 +18,7 @@ func NewDB(dbName string) (*sqlx.DB, error) {
 		User:                 os.Getenv("DB_USER"),
 		Passwd:               "parth123",
 		Net:                  "tcp",
-		Addr:                 "172.19.0.2:33060",
+		Addr:                 "task-management-mysql-1",
 		DBName:               dbName,
 		AllowNativePasswords: true,
 	}
@@ -38,5 +38,6 @@ func NewDB(dbName string) (*sqlx.DB, error) {
 		return nil, err
 	}
 	db.SetMaxIdleConns(0)
+	fmt.Println("hiii")
 	return db, nil
 }

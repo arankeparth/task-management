@@ -1,6 +1,7 @@
 package main
 
 import (
+	"strings"
 	"fmt"
 	"net/http"
 	"net/http/httputil"
@@ -12,9 +13,9 @@ import (
 
 // Define routing rules
 var routes = map[string]string{
-	taskspec.BasePath:     fmt.Sprintf("http://localhost:%s", taskspec.Host),
-	authspec.BasePath:     fmt.Sprint("http://localhost:%s", authspec.Host),
-	customerspec.BasePath: fmt.Sprint("http://localhost:%s", customerspec.Host),
+	taskspec.BasePath:     fmt.Sprintf("http://localhost%s", taskspec.Host),
+	authspec.BasePath:     fmt.Sprintf("http://localhost%s", authspec.Host),
+	customerspec.BasePath: fmt.Sprintf("http://localhost%s", customerspec.Host),
 }
 
 func main() {
@@ -29,13 +30,15 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("hi")
 	// Get the path from the incoming request
 	path := r.URL.Path
+	var backendURL string
 
-	// Look up the corresponding backend URL based on the path
-	backendURL, ok := routes[path]
-	if !ok {
-		http.NotFound(w, r)
-		return
+	for route, targetPath := range routes {
+		if strings.HasPrefix(path, route) {
+			backendURL = targetPath
+			break
+		}
 	}
+	fmt.Println(backendURL)
 
 	// Parse the backend URL
 	target, _ := url.Parse(backendURL)
@@ -44,7 +47,9 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 	proxy := httputil.NewSingleHostReverseProxy(target)
 
 	// Update the request URL before forwarding
-	r.URL.Path = "/"
+	fmt.Println(path)
+	r.URL.Path = path
+	fmt.Println(r.URL.Path)
 	r.Host = target.Host
 
 	// Forward the request to the backend
