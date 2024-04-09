@@ -8,4 +8,5 @@ chmod +x ./server/taskservice/build/build.sh
 ./server/customerservice/build/build.sh
 ./server/taskservice/build/build.sh
 
-docker build server/db/ -t partharanke/db:latest
+docker build server/db/build -t partharanke/db:latest
+docker push partharanke/db:latest
