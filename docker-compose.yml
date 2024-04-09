@@ -1,13 +1,9 @@
 version: '3'
 
 services:
-  mysql:
-    image: mysql:latest
+  database:
+    image: partharanke/db
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: parth123
-      MYSQL_USER: parth
-      MYSQL_PASSWORD: 19122000
     ports:
       - "3306:3306"
 
@@ -24,7 +20,7 @@ services:
       - "5000:5000"
   
   tasksservice:
-    image: partharanke/taskservice
+    image: partharanke/tasksservice
     restart: always
     ports:
       - ":5050:5050"

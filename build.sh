@@ -7,3 +7,5 @@ chmod +x ./server/taskservice/build/build.sh
 ./server/authservice/build/build.sh
 ./server/customerservice/build/build.sh
 ./server/taskservice/build/build.sh
+
+docker build server/db/ -t partharanke/db:latest

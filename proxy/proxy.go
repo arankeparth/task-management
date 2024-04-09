@@ -47,9 +47,7 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 	proxy := httputil.NewSingleHostReverseProxy(target)
 
 	// Update the request URL before forwarding
-	fmt.Println(path)
 	r.URL.Path = path
-	fmt.Println(r.URL.Path)
 	r.Host = target.Host
 
 	// Forward the request to the backend
