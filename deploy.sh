@@ -14,4 +14,6 @@ docker build server/db/build -t partharanke/db:latest
 docker push partharanke/db:latest
 docker compose up -d
 
+
+kill -9 $(pgrep proxy)
 go run proxy/proxy.go &
