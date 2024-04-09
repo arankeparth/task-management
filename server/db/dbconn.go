@@ -18,7 +18,7 @@ func NewDB(dbName string) (*sqlx.DB, error) {
 		User:                 os.Getenv("DB_USER"),
 		Passwd:               "parth123",
 		Net:                  "tcp",
-		Addr:                 "task-management-mysql-1",
+		Addr:                 "task-management-database-1",
 		DBName:               dbName,
 		AllowNativePasswords: true,
 	}

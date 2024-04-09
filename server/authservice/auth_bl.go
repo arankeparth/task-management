@@ -6,6 +6,7 @@ import (
 	authdl "task-management/server/authservice/dl"
 	"task-management/server/spec/authspec"
 	"time"
+	"fmt"
 
 	"github.com/dgrijalva/jwt-go"
 	"golang.org/x/crypto/bcrypt"
@@ -59,6 +60,7 @@ func (h *AuthHandler) Login(ctx context.Context, username string, password strin
 }
 
 func (h *AuthHandler) CreateUser(ctx context.Context, username string, password string, customerid string) error {
+	fmt.Println("getting here")
 	err := h.AuthDl.CreateUser(username, password, customerid)
 	if err != nil {
 		return err

@@ -6,6 +6,6 @@ const (
 
 // HTTP constants
 const (
-	BasePath = "/task/v1"
+	BasePath = "/task/"
 	Host     = ":5050"
 )

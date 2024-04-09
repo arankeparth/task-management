@@ -21,7 +21,7 @@ WORKDIR taskservice
 COPY taskservice .
 
 # # Expose port 8080 to the outside world
-EXPOSE 5000
+EXPOSE 5050
 
 RUN chmod +x taskservice
 

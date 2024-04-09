@@ -49,7 +49,7 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 	// Update the request URL before forwarding
 	r.URL.Path = path
 	r.Host = target.Host
-
+	fmt.Println(r.Host, r.URL.Path)
 	// Forward the request to the backend
 	proxy.ServeHTTP(w, r)
 }

@@ -1,6 +1,7 @@
 package customerApi
 
 import (
+	"fmt"
 	"errors"
 	"task-management/server/spec/authspec"
 	"task-management/server/spec/customerspec"
@@ -17,8 +18,10 @@ func (h *CustomerHandler) CreateUserCreds(req *customerspec.CreateCustomerReques
 		SetHeader("Content-Type", "application/json").
 		SetBody(payload).
 		Post(h.Client.BaseURL + authspec.CreateUserPath)
-
+	
+	fmt.Println(resp)
 	if resp.IsError() {
+		fmt.Println("err")
 		return errors.New("failed to create a new user")
 	}
 

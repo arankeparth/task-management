@@ -1,3 +1,5 @@
+docker compose down
+docker volume prune
 echo "Building and deploying services"
 
 chmod +x ./server/authservice/build/build.sh
@@ -10,3 +12,4 @@ chmod +x ./server/taskservice/build/build.sh
 
 docker build server/db/build -t partharanke/db:latest
 docker push partharanke/db:latest
+./deploy.sh

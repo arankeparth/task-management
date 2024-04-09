@@ -19,7 +19,7 @@ func NewCustomerService() *CustomerService {
 func (cs *CustomerService) InitCustomerServiceHandler() http.Handler {
 	CustomerDB := "customerservice"
 	client := resty.New()
-	client.BaseURL = "http://localhost:8080"
+	client.BaseURL = "http://task-management-authservice-1:8080"
 	Db, err := dbconn.NewDB(CustomerDB)
 	if err != nil {
 		log.Print(err.Error())

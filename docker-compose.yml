@@ -20,7 +20,7 @@ services:
       - "5000:5000"
   
   tasksservice:
-    image: partharanke/tasksservice
+    image: partharanke/taskservice
     restart: always
     ports:
       - ":5050:5050"
