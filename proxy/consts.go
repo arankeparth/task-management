@@ -14,7 +14,7 @@ const (
 	ProxyPortHttps = ":443"
 )
 
-var routes = map[string]string{
+var Routes = map[string]string{
 	taskspec.BasePath:     fmt.Sprintf("%s%s", localhost, taskspec.Port),
 	authspec.BasePath:     fmt.Sprintf("%s%s", localhost, authspec.Port),
 	customerspec.BasePath: fmt.Sprintf("%s%s", localhost, customerspec.Port),

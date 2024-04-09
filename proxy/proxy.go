@@ -1,4 +1,4 @@
-package main
+package proxy
 
 import (
 	"fmt"
@@ -17,7 +17,7 @@ func handleRequest(w http.ResponseWriter, r *http.Request) {
 	path := r.URL.Path
 	var backendURL string
 
-	for route, targetPath := range routes {
+	for route, targetPath := range Routes {
 		if strings.HasPrefix(path, route) {
 			backendURL = targetPath
 			break

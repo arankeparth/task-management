@@ -21,9 +21,9 @@ func main() {
 	Mux := mux.NewRouter()
 	Mux.Handle(customerspec.BasePath, Handler)
 	errs := make(chan error, 100)
-	logger.Printf("Listening on %s", customerspec.Host)
+	logger.Printf("Listening on %s", customerspec.Port)
 	go func() {
-		errs <- http.ListenAndServe(customerspec.Host, accessControl(Handler))
+		errs <- http.ListenAndServe(customerspec.Port, accessControl(Handler))
 	}()
 	err := <-errs
 	logger.Printf("Error in customer service: %s", err.Error())

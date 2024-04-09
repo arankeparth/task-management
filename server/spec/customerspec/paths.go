@@ -6,6 +6,6 @@ const (
 	CreateCustomerPath = "/customerApi/v1/create"
 	UpdateCustomerPath = "/customerApi/v1/update"
 	DeleteCustomerPath = "/customerApi/v1/delete"
-	GetCustomerPath    = "/customerApi/v1/getcustomerinfo/{customerid}"
-	GetOffersPath      = "/customerApi/v1/getoffers/{customerid}"
+	GetCustomerPath    = "/customerApi/v1/getcustomerinfo/{customerId}"
+	GetOffersPath      = "/customerApi/v1/getoffers/{customerId}"
 )

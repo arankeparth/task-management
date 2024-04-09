@@ -23,7 +23,7 @@ func main() {
 	errs := make(chan error, 100)
 
 	go func() {
-		errs <- http.ListenAndServe(authspec.Host, accessControl(AuthHandler))
+		errs <- http.ListenAndServe(authspec.Port, accessControl(AuthHandler))
 	}()
 	err := <-errs
 	logger.Printf("Error in auth service: %s", err.Error())
